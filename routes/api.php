@@ -6,9 +6,12 @@ use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::apiResource('categories', CategoryController::class);
-    Route::apiResource('transactions', TransactionController::class);
+Route::group([], function () {/// 
+    Route::apiResource('categories',
+        CategoryController::class);
+ 
+    Route::apiResource('transactions',
+        TransactionController::class);
 });
 
 Route::get('/user', function (Request $request) {
