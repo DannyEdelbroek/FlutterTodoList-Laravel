@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:todofrontendapi/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +12,35 @@ class Register extends StatefulWidget {
 }
 
 class RegisterState extends State<Register> {
+  late String deviceName;
+
+  @override
+  void initState() {
+    super.initState();
+    getDeviceName();
+  }
+
+  Future<void> getDeviceName() async {
+    try {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      if (Platform.isAndroid) {
+        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+        setState(() {
+          deviceName = androidInfo.model;
+        });
+      } else if (Platform.isIOS) {
+        IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+        setState(() {
+          deviceName = iosInfo.name;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        deviceName = 'Could not retrieve device name';
+      });
+    }
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -23,22 +54,25 @@ class RegisterState extends State<Register> {
     if (!form!.validate()) {
       return;
     }
+
     final AuthProvider provider = Provider.of<AuthProvider>(
       context,
       listen: false,
     );
+
     try {
-      String token = await provider.register(
+      await provider.register(
         nameController.text,
         emailController.text,
         passwordController.text,
         confirmPasswordController.text,
-        'Some device name',
+        deviceName,
       );
+
       Navigator.pop(context);
-    } catch (Exception) {
+    } catch (e) {
       setState(() {
-        errorMessage = Exception.toString().replaceAll('Exception: ', '');
+        errorMessage = e.toString().replaceAll('Exception: ', '');
       });
     }
   }

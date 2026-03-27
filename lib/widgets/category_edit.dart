@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todofrontendapi/services/api.dart';
 import 'package:todofrontendapi/models/category.dart';
 
 class CategoryEdit extends StatefulWidget {
@@ -15,7 +14,6 @@ class CategoryEdit extends StatefulWidget {
 class CategoryEditState extends State<CategoryEdit> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final categoryNameController = TextEditingController();
-  ApiService apiService = ApiService();
   String errorMessage = '';
 
   @override

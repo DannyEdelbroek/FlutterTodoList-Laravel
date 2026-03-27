@@ -3,22 +3,26 @@ import 'package:http/http.dart' as http;
 import 'package:todofrontendapi/models/category.dart';
 
 class ApiService {
-  ApiService();
+  late String token;
+
+  ApiService(String token) {
+    this.token = token;
+  }
 
   // Vervang deze URL met de actuele URL die ngrok geeft!
   static const String baseUrl =
       'https://crosby-diazoamino-nontheocratically.ngrok-free.dev'; // 👈 geen trailing slash, geen .dev
 
   Future<List<Category>> fetchCategories() async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/api/categories'),
-      headers: {
-        "Accept": "application/json",
-        "ngrok-skip-browser-warning": "true",
-      },
-    );
+    final http.Response response = await http
+        .get(Uri.parse('$baseUrl/api/categories'), headers: <String, String>{
+      'Accept': 'application/json',
+      "ngrok-skip-browser-warning": "true",
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
 
-    final Map<String, dynamic> data = json.decode(response.body);
+    final Map<String, dynamic> data = json.decode(response.body); 
 
     if (!data.containsKey('data') || data['data'] is! List) {
       throw Exception('Failed to load categories');
@@ -36,6 +40,9 @@ class ApiService {
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(<String, String>{'name': category.name}),
     );
@@ -49,7 +56,11 @@ class ApiService {
 
   Future<void> deleteCategory(id) async {
     String url = '$baseUrl/api/categories/$id';
-    final http.Response response = await http.delete(Uri.parse(url));
+    final http.Response response = await http.delete(Uri.parse(url), headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
 
     if (response.statusCode != 204) {
       throw Exception('Failed to delete category');
@@ -62,6 +73,9 @@ class ApiService {
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(<String, String>{'name': name}),
     );
