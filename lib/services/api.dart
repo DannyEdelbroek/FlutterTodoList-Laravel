@@ -29,19 +29,21 @@ class ApiService {
     return categories.map((category) => Category.fromJson(category)).toList();
   }
 
-  Future saveCategory(int id, String name) async {
-    String url = '$baseUrl/api/categories/$id';
+  Future saveCategory(Category category) async {
+    String url = '$baseUrl/api/categories/${category.id}';
 
     final response = await http.put(
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode({'name': name}),
+      body: jsonEncode(<String, String>{'name': category.name}),
     );
 
     if (response.statusCode != 200) {
       throw Exception('Failed to update category');
     }
+    final Map<String, dynamic> data = json.decode(response.body);
+    return Category.fromJson(data['data']);
   }
 }
