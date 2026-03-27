@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:todofrontendapi/models/category.dart';
 import 'package:todofrontendapi/providers/category_provider.dart';
 import 'package:todofrontendapi/widgets/category_edit.dart';
+import 'package:todofrontendapi/widgets/category_add.dart';
 
 class CategoriesList extends StatefulWidget {
   const CategoriesList({super.key});
@@ -89,6 +90,18 @@ class CategoriesListState extends State<CategoriesList> {
                 ),
               );
             },
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) {
+                  return CategoryAdd(provider.addCategory);
+                },
+              );
+            },
+            child: Icon(Icons.add),
           ),
         );
       },
