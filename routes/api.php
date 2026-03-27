@@ -6,7 +6,7 @@ use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::group([], function () {/// 
+Route::group(['middleware' => 'auth:sanctum'], function () { 
     Route::apiResource('categories',
         CategoryController::class);
  
