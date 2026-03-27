@@ -5,6 +5,7 @@ import './Screens/categories/categories_list.dart';
 import 'package:todofrontendapi/providers/category_provider.dart';
 import 'package:todofrontendapi/providers/auth_provider.dart';
 import 'package:todofrontendapi/screens/home.dart';
+import 'package:todofrontendapi/providers/transaction_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -24,6 +25,8 @@ class MyApp extends StatelessWidget {
             providers: [
               ChangeNotifierProvider<CategoryProvider>(
                 create: (context) => CategoryProvider(authProvider)), 
+                ChangeNotifierProvider<TransactionProvider>(
+                    create: (context) => TransactionProvider(authProvider)),
             ],
             child: MaterialApp(
               title: 'Welcome to Flutter',
