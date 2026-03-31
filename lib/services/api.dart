@@ -8,7 +8,7 @@ class ApiService {
   late String? token;
   late AuthProvider? authProvider;
 
-   ApiService(String token, AuthProvider? auth) {
+  ApiService(String token, AuthProvider? auth) {
     // ignore: prefer_initializing_formals
     this.token = token;
     authProvider = auth;
@@ -17,6 +17,10 @@ class ApiService {
   // Vervang deze URL met de actuele URL die ngrok geeft!
   static const String baseUrl =
       'https://crosby-diazoamino-nontheocratically.ngrok-free.dev';
+
+  void logout() {
+    authProvider?.logout();
+  }
 
   Future<List<Category>> fetchCategories() async {
     final http.Response response = await http.get(
@@ -28,6 +32,11 @@ class ApiService {
         'Authorization': 'Bearer $token',
       },
     );
+
+    if (response.statusCode == 401) {
+      logout();
+      throw Exception('Unauthorized');
+    }
 
     final Map<String, dynamic> data = json.decode(response.body);
 
@@ -54,6 +63,11 @@ class ApiService {
       body: jsonEncode(<String, String>{'name': category.name}),
     );
 
+    if (response.statusCode == 401) {
+      logout();
+      throw Exception('Unauthorized');
+    }
+
     if (response.statusCode != 200) {
       throw Exception('Failed to update category');
     }
@@ -72,6 +86,11 @@ class ApiService {
       },
     );
 
+    if (response.statusCode == 401) {
+      logout();
+      throw Exception('Unauthorized');
+    }
+
     if (response.statusCode != 204) {
       throw Exception('Failed to delete category');
     }
@@ -89,6 +108,11 @@ class ApiService {
       },
       body: jsonEncode(<String, String>{'name': name}),
     );
+
+    if (response.statusCode == 401) {
+      logout();
+      throw Exception('Unauthorized');
+    }
 
     if (response.statusCode != 201) {
       throw Exception('Failed to create category');
@@ -137,11 +161,7 @@ class ApiService {
     return response.body;
   }
 
-  Future<String> login(
-    String email,
-    String password,
-    String deviceName,
-  ) async {
+  Future<String> login(String email, String password, String deviceName) async {
     String url = '$baseUrl/api/auth/login';
     final http.Response response = await http.post(
       Uri.parse(url),
@@ -183,6 +203,11 @@ class ApiService {
       },
     );
 
+    if (response.statusCode == 401) {
+      logout();
+      throw Exception('Unauthorized');
+    }
+
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
 
@@ -222,6 +247,12 @@ class ApiService {
         'transaction_date': date,
       }),
     );
+
+    if (response.statusCode == 401) {
+      logout();
+      throw Exception('Unauthorized');
+    }
+
     if (response.statusCode != 201) {
       throw Exception('Error happened on create');
     }
@@ -245,6 +276,12 @@ class ApiService {
         'transaction_date': transaction.transactionDate,
       }),
     );
+
+    if (response.statusCode == 401) {
+      logout();
+      throw Exception('Unauthorized');
+    }
+
     if (response.statusCode != 200) {
       print(response.body);
       throw Exception('Error happened on update');
@@ -263,6 +300,12 @@ class ApiService {
         'Authorization': 'Bearer $token',
       },
     );
+
+    if (response.statusCode == 401) {
+      logout();
+      throw Exception('Unauthorized');
+    }
+
     if (response.statusCode != 204) {
       throw Exception('Error happened on delete');
     }
