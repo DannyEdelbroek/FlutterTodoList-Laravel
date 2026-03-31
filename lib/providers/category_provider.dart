@@ -10,7 +10,7 @@ class CategoryProvider extends ChangeNotifier {
 
   CategoryProvider(AuthProvider authProvider) {
     authProvider = authProvider;
-    apiService = ApiService(authProvider.token);
+    apiService = ApiService(authProvider.token, authProvider);
     init();
   }
 

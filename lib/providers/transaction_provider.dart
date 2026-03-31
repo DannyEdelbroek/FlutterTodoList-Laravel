@@ -22,7 +22,7 @@ class TransactionProvider extends ChangeNotifier {
       return;
     }
 
-    apiService = ApiService(token);
+        apiService = ApiService(token, authProvider);
     
     try {
       transactions = await apiService.fetchTransactions();
