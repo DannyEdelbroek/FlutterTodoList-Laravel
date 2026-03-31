@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:todofrontendapi/providers/transaction_provider.dart';
  
 class Transactions extends StatefulWidget {
+  const Transactions({super.key});
+
   @override
   _TransactionsState createState() => _TransactionsState();
 }
@@ -25,7 +27,7 @@ class _TransactionsState extends State<Transactions> {
         itemBuilder: (context, index) {
           Transaction transaction = transactions[index];
           return ListTile(
-            title: Text('\$' + transaction.amount),
+            title: Text('\$${transaction.amount}'),
             subtitle: Text(transaction.categoryName),
             trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
               Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -71,7 +73,7 @@ class _TransactionsState extends State<Transactions> {
           );
         },
       ),
-      floatingActionButton: new FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
           onPressed: () {
             showModalBottomSheet(
                 isScrollControlled: true,

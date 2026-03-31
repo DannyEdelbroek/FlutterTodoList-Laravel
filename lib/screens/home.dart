@@ -6,6 +6,8 @@ import 'package:todofrontendapi/providers/auth_provider.dart';
 
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
   _HomeState createState() => _HomeState();
 }

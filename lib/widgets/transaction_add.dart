@@ -8,7 +8,7 @@ import 'package:todofrontendapi/providers/category_provider.dart';
 class TransactionAdd extends StatefulWidget {
   final Function transactionCallback;
  
-  TransactionAdd(this.transactionCallback, {Key? key}) : super(key: key);
+  const TransactionAdd(this.transactionCallback, {super.key});
  
   @override
   _TransactionAddState createState() => _TransactionAddState();
@@ -51,6 +51,7 @@ class _TransactionAddState extends State<TransactionAdd> {
                   if (newValue == null) {
                     return 'Invalid amount format';
                   }
+                  return null;
                 },
                 onChanged: (text) => setState(() => errorMessage = ''),
               ),
@@ -101,12 +102,12 @@ class _TransactionAddState extends State<TransactionAdd> {
                       onPressed: () => Navigator.pop(context),
                     ),
                     ElevatedButton(
-                      child: Text('Save'),
                       onPressed: () => saveTransaction(context),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.purple,
                           foregroundColor: Colors.white
                       ),
+                      child: Text('Save'),
                     ),
                   ]),
               Text(errorMessage, style: TextStyle(color: Colors.red))
@@ -119,11 +120,12 @@ class _TransactionAddState extends State<TransactionAdd> {
         initialDate: DateTime.now(),
         firstDate: DateTime(DateTime.now().year - 5),
         lastDate: DateTime(DateTime.now().year + 5));
-    if (picked != null)
+    if (picked != null) {
       setState(() {
         transactionDateController.text =
             DateFormat('MM/dd/yyyy').format(picked);
       });
+    }
   }
  
   Widget buildCategoriesDropdown() {
@@ -155,6 +157,7 @@ class _TransactionAddState extends State<TransactionAdd> {
             if (value == null) {
               return 'Please select category';
             }
+            return null;
           },
         );
       },
