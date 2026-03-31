@@ -2,13 +2,16 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:todofrontendapi/models/category.dart';
 import 'package:todofrontendapi/models/transaction.dart';
+import 'package:todofrontendapi/providers/auth_provider.dart';
 
 class ApiService {
   late String? token;
+  late AuthProvider? authProvider;
 
-  ApiService(String token) {
+   ApiService(String token, AuthProvider? auth) {
     // ignore: prefer_initializing_formals
     this.token = token;
+    authProvider = auth;
   }
 
   // Vervang deze URL met de actuele URL die ngrok geeft!
