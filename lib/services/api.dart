@@ -7,12 +7,13 @@ class ApiService {
   late String? token;
 
   ApiService(String token) {
+    // ignore: prefer_initializing_formals
     this.token = token;
   }
 
   // Vervang deze URL met de actuele URL die ngrok geeft!
   static const String baseUrl =
-      'https://crosby-diazoamino-nontheocratically.ngrok-free.dev'; // 👈 geen trailing slash, geen .dev
+      'https://crosby-diazoamino-nontheocratically.ngrok-free.dev';
 
   Future<List<Category>> fetchCategories() async {
     final http.Response response = await http.get(
