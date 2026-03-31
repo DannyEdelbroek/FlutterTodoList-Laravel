@@ -53,8 +53,6 @@ class AuthProvider extends ChangeNotifier {
   Future<String?> getToken() {
     Future<String?> token = storage.read(key: 'token');
     return Future.value(token);
-  
-    return Future.value('');
   }
 
   Future<String?> setToken(String token) async {
